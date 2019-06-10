@@ -1,0 +1,21 @@
+version: '3.7'
+
+services:
+  nginx:
+    image: nginx:lastest
+    restart: always
+    networks: 
+      - defaults
+      - devnet
+    ports:
+      - '80:80'
+      - '443:443'
+   volumes:
+     - './conf.d:/etc/nginx/conf.d'
+     - './log:/var/log/nginx'
+     - './www:/var/www'
+     - './etc/letsencrypt:/etc/letsencrypt'
+
+networks:
+  devnet:
+    external: true
