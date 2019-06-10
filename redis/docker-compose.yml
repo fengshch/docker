@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+  redis:
+    image: redis
+    restart: always
+    container_name: redis
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      - default
+      - devnet
+    ports:
+      - 6379:6379
+    volumes:
+      - rsdata:/data
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+
+volumes:
+  rsdata:
+networks:
+  devnet:
+    external: true

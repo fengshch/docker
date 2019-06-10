@@ -1,0 +1,42 @@
+version: '3.7'
+
+services:
+  gitlab:
+    container_name: gitlab
+    image: gitlab/gitlab-ce
+    networks:
+      - default
+      - devnet
+    ports:
+      - '8443:443'
+      - '8989:8989'
+      - '10022:22'
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://127.0.0.1:8989'
+        postgresql['enable'] = false
+        gitlab_rails['db_adapter'] = 'postgresql'
+        gitlab_rails['db_encoding'] = 'utf8'
+        gitlab_rails['db_host'] = 'devpg'
+        gitlab_rails['db_port'] = '5432'
+        gitlab_rails['db_username'] = 'gitlab'
+        gitlab_rails['db_password'] = 'gitlab'
+        gitlab_rails['db_database'] = "gitlab"
+        redis['enable'] = false
+        gitlab_rails['redis_host'] = "redis"
+        gitlab_rails['redis_port'] = "6379"
+        gitlab_rails['redis_password'] = "123456"
+        gitlab_rails['redis_database'] = 2 
+
+    volumes:
+        - gitconfig:/etc/gitlab
+        - gitlog:/var/log/gitlab
+        - gitdata:/var/opt/gitlab
+
+volumes:
+  gitdata:
+  gitlog:
+  gitconfig:
+networks:
+  devnet:
+    external: true

@@ -1,0 +1,39 @@
+version: '3.7'
+
+services:
+  devpg:
+    image: postgres:latest
+    container_name: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: docker
+    networks:
+      - default
+      - devnet
+    volumes:
+      - pgadmin:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: fengshch@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: zhujiang123
+    networks:
+      - default
+      - devnet
+    volumes:
+      - pgadmin:/root/.pgadmin
+    ports:
+      - 8380:80
+
+volumes:
+  pgdata:
+  pgadmin:
+networks:
+  devnet:
+    external: true
